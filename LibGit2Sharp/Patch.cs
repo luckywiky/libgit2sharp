@@ -30,7 +30,7 @@ namespace LibGit2Sharp
         protected Patch()
         { }
 
-        internal Patch(DiffListSafeHandle diff)
+        internal Patch(DiffSafeHandle diff)
         {
             Proxy.git_diff_foreach(diff, FileCallback, null, DataCallback);
 
@@ -50,11 +50,10 @@ namespace LibGit2Sharp
             changes.Add(newFilePath, new ContentChanges(delta.IsBinary()));
         }
 
-        private int DataCallback(GitDiffDelta delta, GitDiffRange range, GitDiffLineOrigin lineOrigin, IntPtr content,
-            UIntPtr contentLen, IntPtr payload)
+        private int DataCallback(GitDiffDelta delta, GitDiffHunk hunk, GitDiffLine line, IntPtr payload)
         {
             var filePath = LaxFilePathMarshaler.FromNative(delta.NewFile.Path);
-            AddLineChange(this[filePath], lineOrigin);
+            AddLineChange(this[filePath], line.lineOrigin);
 
             return 0;
         }
@@ -75,9 +74,9 @@ namespace LibGit2Sharp
             }
         }
 
-        private int PrintCallBack(GitDiffDelta delta, GitDiffRange range, GitDiffLineOrigin lineorigin, IntPtr content, UIntPtr contentlen, IntPtr payload)
+        private int PrintCallBack(GitDiffDelta delta, GitDiffHunk hunk, GitDiffLine line, IntPtr payload)
         {
-            string formattedoutput = LaxUtf8Marshaler.FromNative(content, (int)contentlen);
+            string formattedoutput = LaxUtf8Marshaler.FromNative(line.content, (int)line.contentLen);
             var filePath = LaxFilePathMarshaler.FromNative(delta.NewFile.Path);
 
             fullPatchBuilder.Append(formattedoutput);

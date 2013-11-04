@@ -182,7 +182,7 @@
     <Compile Include="Core\Handles\GitErrorSafeHandle.cs" />
     <Compile Include="Core\Handles\NoteSafeHandle.cs" />
     <Compile Include="Core\Handles\ObjectDatabaseSafeHandle.cs" />
-    <Compile Include="Core\Handles\DiffListSafeHandle.cs" />
+    <Compile Include="Core\Handles\DiffSafeHandle.cs" />
     <Compile Include="Core\Handles\GitObjectSafeHandle.cs" />
     <Compile Include="Core\Handles\IndexEntrySafeHandle.cs" />
     <Compile Include="Core\Handles\NotOwnedSafeHandleBase.cs" />
